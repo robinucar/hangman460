@@ -1,43 +1,50 @@
 import random
+
 class Hangman:
+    """Hangman Class"""
     def __init__(self, word_list, num_lives = 5 ):
-        self.word_list = word_list
-        self.num_lives = num_lives
-        self.word = random.choice(self.word_list)
+        """Initialise"""
+        self.word_list = word_list # game word list
+        self.num_lives = num_lives # number of lives
+        self.word = random.choice(self.word_list) # random word within word_list
         print(self.word)
-        self.word_guessed =len(list(self.word.strip(""))) * ["_"]
+        self.word_guessed =len(list(self.word.strip(""))) * ["_"] # replace letters with underscore
         print(self.word_guessed)
-        self.num_letters = len(set(self.word))
+        self.num_letters = len(set(self.word)) # count of unique characters
         print(self.num_letters)
-        self.list_of_guesses = []
-    def check_guess(self,guess):
-        self.user_guess_letter = guess.lower()
-        print(self.user_guess_letter)
-        print(self.word)
-        if self.user_guess_letter in self.word.lower():
-            for index,letter in enumerate(self.word.lower()):
-                if letter == self.user_guess_letter:
+        self.list_of_guesses = [] # letters already guessed
+    def check_guess_letter(self,guess):
+        """Checking user letter"""
+        user_guess_letter = guess.lower() # letter which entered by user
+        word = self.word.lower() # random word
+        print(user_guess_letter)
+        print(word)
+        if user_guess_letter in word:
+            for index,letter in enumerate(word):
+                if letter == user_guess_letter:
                     self.word_guessed[index] = letter
                     print(self.word_guessed)
             self.num_letters = self.num_letters - 1
             print(self.num_letters)
-            print(f"Good guess! {self.user_guess_letter} is in the word")
+            print(f"Good guess! {user_guess_letter} is in the word")
         else:
             self.num_lives = self.num_lives - 1
-            print(f"Sorry, {self.user_guess_letter} is not in the word. Try again.")
-            print(f"You have {self.num_lives} left...")
-    def ask_for_input(self):
+            print(f"Sorry, {user_guess_letter} is not in the word. Try again.")
+            print(f"You have {self.num_lives} lives left...")
+
+    def ask_for_user_input(self):
+        """Ask user to choice a letter and validation"""
         while True:
-            self.user_guess_letter = input("Please enter a single letter: ")
-            if self.user_guess_letter.isalpha() != True:
+            user_guess_letter = input("Please enter a single letter: ") # ask user to enter a letter
+            if user_guess_letter.isalpha() != True: # validation
                 print("Invalid letter. Please, enter a single alphabetical character.")
-            elif len(self.user_guess_letter) != 1:
+            elif len(user_guess_letter) != 1:
                 print("Invalid letter. Please, enter a single alphabetical character.")
-            elif self.user_guess_letter in self.list_of_guesses:
+            elif user_guess_letter in self.list_of_guesses:
                 print("You already tried that letter!")
             else:
-                self.check_guess(self.user_guess_letter)
-                self.list_of_guesses.append(self.user_guess_letter)
+                self.check_guess_letter(user_guess_letter)
+                self.list_of_guesses.append(user_guess_letter)
                 print(self.list_of_guesses)
-game1 = Hangman(["Cherry", "Apricot", "Peach", "Apple", "Orange"])
-game1.ask_for_input()
+game1 = Hangman(["Cherry", "Apricot", "Peach", "Apple", "Orange"]) # create an object from Hangman class
+game1.ask_for_user_input() # call the ask_for_user_input method.
